@@ -1,13 +1,22 @@
 package com.example.asm_mob2041_ph41626.Fragment;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import com.example.asm_mob2041_ph41626.DAO.ThuThuDAO;
+import com.example.asm_mob2041_ph41626.Model.ThuThu;
 import com.example.asm_mob2041_ph41626.R;
 
 /**
@@ -56,11 +65,106 @@ public class DoiMatKhauFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+    Button btn_cancel,btn_save;
+    EditText edt_oldpassword,edt_newpassword,edt_enterthepassword;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_doi_mat_khau, container, false);
+        View view = inflater.inflate(R.layout.fragment_doi_mat_khau, container, false);
+
+        initUI(view);
+
+        btnCancel();
+        btnSave();
+
+        return view;
+    }
+
+    private void btnSave() {
+        ThuThuDAO thuThuDAO = new ThuThuDAO(getContext());
+        btn_save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setMessage("Bạn có chắc chắn muốn thay đổi mật khẩu không?");
+                builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String oldPass = edt_oldpassword.getText().toString().trim();
+                        String newPass = edt_newpassword.getText().toString().trim();
+                        String enterPass = edt_enterthepassword.getText().toString().trim();
+
+                        SharedPreferences preferences = getActivity().getSharedPreferences("USER", Context.MODE_PRIVATE);
+                        String user = preferences.getString("username","");
+                        if (validate(oldPass,newPass,enterPass) > 0) {
+                            ThuThu thuThu = thuThuDAO.getID(user);
+                            thuThu.setMatKhau(newPass);
+                            if (thuThuDAO.update(thuThu) > 0) {
+                                Toast.makeText(getContext(), "Thay đổi mật khẩu thành công !", Toast.LENGTH_SHORT).show();
+                                edt_oldpassword.setText("");
+                                edt_newpassword.setText("");
+                                edt_enterthepassword.setText("");
+                            } else {
+                                Toast.makeText(getContext(), "Thay đổi mật khẩu thất bại !", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
+                builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.show();
+            }
+        });
+    }
+
+    public int validate(String oldPass,String newPass,String enterPass) {
+        int check = 1;
+        if (oldPass.length() != 0 && newPass.length() != 0 && enterPass.length() != 0) {
+            SharedPreferences preferences = getActivity().getSharedPreferences("USER", Context.MODE_PRIVATE);
+            String getPassOld = preferences.getString("password","");
+            if (!getPassOld.equals(oldPass)) {
+                check = -1;
+            }
+            if (!newPass.equals(enterPass)) {
+                check = -1;
+            }
+        } else {
+            if (oldPass.length() == 0) {
+                edt_oldpassword.setError("Không được để trống trường này !");
+            }
+            if (newPass.length() == 0) {
+                edt_newpassword.setError("Không được để trống trường này !");
+            }
+            if (enterPass.length() == 0) {
+                edt_enterthepassword.setError("Không được để trống trường này !");
+            }
+            check = -1;
+        }
+        return check;
+    }
+
+    private void btnCancel() {
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                edt_oldpassword.setText("");
+                edt_newpassword.setText("");
+                edt_enterthepassword.setText("");
+            }
+        });
+    }
+
+    private void initUI(View view) {
+        btn_cancel = view.findViewById(R.id.btn_cancel);
+        btn_save = view.findViewById(R.id.btn_save);
+
+        edt_oldpassword = view.findViewById(R.id.edt_oldpassword);
+        edt_newpassword = view.findViewById(R.id.edt_newpassword);
+        edt_enterthepassword = view.findViewById(R.id.edt_enterthepassword);
     }
 }

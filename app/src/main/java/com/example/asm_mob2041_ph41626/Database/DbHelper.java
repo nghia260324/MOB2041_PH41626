@@ -17,7 +17,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         //Tao bang Thu Thu
         String createTableThuThu=
-                "create table ThuThu (" +
+                "Create table ThuThu (" +
                         "maTT TEXT PRIMARY KEY, " +
                         "hoTen TEXT NOT NULL, " +
                         "matKhau TEXT NOT NULL)";
@@ -25,15 +25,15 @@ public class DbHelper extends SQLiteOpenHelper {
 
         //Tao bang Thanh Vien
         String createTableThanhVien=
-                "create table ThanhVien (" +
-                        "maTV TEXT PRIMARY KEY, " +
+                "Create table ThanhVien (" +
+                        "maTV INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         "hoTen TEXT NOT NULL, " +
-                        "namSinh TEXT NOT NULL)";
+                        "namSinh INTEGER NOT NULL)";
         db.execSQL(createTableThanhVien);
 
         //Tao bang Phieu Muon
         String createTablePhieuMuon=
-                "create table PhieuMuon(" +
+                "Create table PhieuMuon(" +
                         "maPM INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         "maTT TEXT NOT NULL, " +
                         "maTV INTEGER NOT NULL, " +
@@ -45,7 +45,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
         //Tao bang Sach
         String createTableSach=
-                "create table PhieuMuon(" +
+                "Create table Sach(" +
                         "maSach INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         "tenSach TEXT NOT NULL, " +
                         "giaThue INTEGER NOT NULL, " +
@@ -54,10 +54,39 @@ public class DbHelper extends SQLiteOpenHelper {
 
         //Tao bang Loai Sach
         String createTableLoaiSach=
-                "create table LoaiSach(" +
+                "Create table LoaiSach(" +
                         "maLoai INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         "tenLoai TEXT NOT NULL)";
         db.execSQL(createTableLoaiSach);
+
+        String add_tt = "INSERT INTO ThuThu VALUES" +
+                "('ttnva','Nguyễn Văn A','12345')," +
+                "('ttnvb','Nguyễn Văn B','12345')";
+        db.execSQL(add_tt);
+
+        String add_loaiSach = "INSERT INTO LoaiSach VALUES" +
+                "(0,'CNTT')," +
+                "(1,'Ngoại ngữ')," +
+                "(2,'Sức khỏe')," +
+                "(3,'Kinh tế')," +
+                "(4,'Khoa học')";
+        db.execSQL(add_loaiSach);
+
+        String add_sach = "INSERT INTO Sach VALUES" +
+                "(0,'Lập trình Javascrip Cơ bản',5000,0)," +
+                "(1,'Lập trình Javascrip Nâng cao',7000,0)," +
+                "(2,'Công nghệ tương lai',10000,0)," +
+                "(3,'Tri thức về vạn vật',5000,4)," +
+                "(4,'Lịch sử khoa học',5000,4)";
+        db.execSQL(add_sach);
+
+        String add_thanhvien = "INSERT INTO ThanhVien VALUES" +
+                "(0,'Nguyễn Văn A',2000)," +
+                "(1,'Nguyễn Văn B',2001)," +
+                "(2,'Nguyễn Văn C',2002)," +
+                "(3,'Nguyễn Văn D',2003)," +
+                "(4,'Nguyễn Văn E',2004)";
+        db.execSQL(add_thanhvien);
     }
 
     @Override
