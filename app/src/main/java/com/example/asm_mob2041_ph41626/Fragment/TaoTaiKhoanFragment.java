@@ -64,6 +64,7 @@ public class TaoTaiKhoanFragment extends Fragment {
         }
     }
 
+    ThuThuDAO thuThuDAO;
     EditText edt_username,edt_name,edt_password,edt_enterthepassword;
     Button btn_cancel,btn_save;
     @Override
@@ -72,6 +73,7 @@ public class TaoTaiKhoanFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tao_tai_khoan, container, false);
 
+        thuThuDAO = new ThuThuDAO(getContext());
         initUI(view);
 
         btnCancel();
@@ -81,10 +83,15 @@ public class TaoTaiKhoanFragment extends Fragment {
     }
 
     private void btnCancel() {
-        edt_username.setText("");
-        edt_name.setText("");
-        edt_password.setText("");
-        edt_enterthepassword.setText("");
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                edt_username.setText("");
+                edt_name.setText("");
+                edt_password.setText("");
+                edt_enterthepassword.setText("");
+            }
+        });
     }
 
     private void btnSave() {
@@ -96,16 +103,21 @@ public class TaoTaiKhoanFragment extends Fragment {
                 String password = edt_password.getText().toString().trim();
                 String enterPass = edt_enterthepassword.getText().toString().trim();
 
+
                 if (validate(username,name,password,enterPass) > 0) {
-                    ThuThuDAO thuThuDAO = new ThuThuDAO(getContext());
-                    if (thuThuDAO.insert(new ThuThu(username,name,password)) > 0) {
-                        Toast.makeText(getContext(), "Thêm thành công !", Toast.LENGTH_SHORT).show();
-                        edt_username.setText("");
-                        edt_name.setText("");
-                        edt_password.setText("");
-                        edt_enterthepassword.setText("");
+                    if (thuThuDAO.checkID(username)) {
+                        Toast.makeText(getContext(), "Tài khoản đã tồn tại !", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(getContext(), "Thêm thất bại !", Toast.LENGTH_SHORT).show();
+                        ThuThuDAO thuThuDAO = new ThuThuDAO(getContext());
+                        if (thuThuDAO.insert(new ThuThu(username,name,password)) > 0) {
+                            Toast.makeText(getContext(), "Thêm thành công !", Toast.LENGTH_SHORT).show();
+                            edt_username.setText("");
+                            edt_name.setText("");
+                            edt_password.setText("");
+                            edt_enterthepassword.setText("");
+                        } else {
+                            Toast.makeText(getContext(), "Thêm thất bại !", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
             }
@@ -115,6 +127,9 @@ public class TaoTaiKhoanFragment extends Fragment {
         int check = 1;
         if (username.length() != 0 && name.length() != 0 && password.length() != 0 && enterPass.length() != 0) {
             if (!password.equals(enterPass)) {
+                Toast.makeText(getContext(), "Nhập lại mật khẩu chưa chính xác !", Toast.LENGTH_SHORT).show();
+                edt_enterthepassword.setError("Nhập lại mật khẩu chưa chính xác !");
+                edt_enterthepassword.requestFocus();
                 check = -1;
             } else {
                 check = 1;
@@ -122,15 +137,19 @@ public class TaoTaiKhoanFragment extends Fragment {
         } else {
             if (username.length() == 0) {
                 edt_username.setError("Không được để trống trường này !");
+                edt_username.requestFocus();
             }
             if (name.length() == 0) {
                 edt_name.setError("Không được để trống trường này !");
+                edt_name.requestFocus();
             }
             if (password.length() == 0) {
                 edt_password.setError("Không được để trống trường này !");
+                edt_password.requestFocus();
             }
             if (enterPass.length() == 0) {
                 edt_enterthepassword.setError("Không được để trống trường này !");
+                edt_enterthepassword.requestFocus();
             }
             check = -1;
         }

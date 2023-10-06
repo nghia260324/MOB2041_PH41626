@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.asm_mob2041_ph41626.Adapter.ThanhVienAdapter;
+import com.example.asm_mob2041_ph41626.DAO.PhieuMuonDAO;
 import com.example.asm_mob2041_ph41626.DAO.ThanhVienDAO;
 import com.example.asm_mob2041_ph41626.IClickItemRCV;
 import com.example.asm_mob2041_ph41626.Model.ThanhVien;
@@ -80,6 +81,7 @@ public class ThanhVienFragment extends Fragment {
 
     FloatingActionButton btn_add;
     static ThanhVienDAO thanhVienDAO;
+    static PhieuMuonDAO phieuMuonDAO;
     ThanhVienAdapter adapter;
     ThanhVien thanhVien;
     EditText edt_maTV,edt_hoten,edt_namsinh;
@@ -94,6 +96,7 @@ public class ThanhVienFragment extends Fragment {
         lstTV = new ArrayList<>();
         thanhVien = new ThanhVien();
         thanhVienDAO = new ThanhVienDAO(getContext());
+        phieuMuonDAO = new PhieuMuonDAO(getContext());
 
         initUI(view);
         fillRCV();
@@ -192,10 +195,14 @@ public class ThanhVienFragment extends Fragment {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getContext(), "Xóa thành công !", Toast.LENGTH_SHORT).show();
-                thanhVienDAO.delete(id);
-                fillRCV();
-                dialog.dismiss();
+                if(phieuMuonDAO.checkID("maTV",String.valueOf(id))) {
+                    Toast.makeText(getContext(), "Không thể xóa Thành viên này !", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "Xóa thành công !", Toast.LENGTH_SHORT).show();
+                    thanhVienDAO.delete(id);
+                    fillRCV();
+                    dialog.dismiss();
+                }
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {

@@ -22,10 +22,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.asm_mob2041_ph41626.Adapter.LoaiSachAdapter;
 import com.example.asm_mob2041_ph41626.Adapter.LoaiSachSpinnerAdapter;
 import com.example.asm_mob2041_ph41626.Adapter.SachAdapter;
 import com.example.asm_mob2041_ph41626.DAO.LoaiSachDAO;
+import com.example.asm_mob2041_ph41626.DAO.PhieuMuonDAO;
 import com.example.asm_mob2041_ph41626.DAO.SachDAO;
 import com.example.asm_mob2041_ph41626.IClickItemRCV;
 import com.example.asm_mob2041_ph41626.Model.LoaiSach;
@@ -91,6 +91,7 @@ public class SachFragment extends Fragment {
     SachAdapter adapter;
     Sach sach;
     LoaiSachDAO loaiSachDAO;
+    PhieuMuonDAO phieuMuonDAO;
     LoaiSach loaiSach;
     LoaiSachSpinnerAdapter spinnerAdapter;
 
@@ -111,7 +112,10 @@ public class SachFragment extends Fragment {
         lstLS = new ArrayList<>();
         sachDAO = new SachDAO(getContext());
         loaiSachDAO = new LoaiSachDAO(getContext());
+        phieuMuonDAO = new PhieuMuonDAO(getContext());
         loaiSach = new LoaiSach();
+
+        lstLS = (ArrayList<LoaiSach>) loaiSachDAO.getAll();
 
         initUI(view);
         fillRCV();
@@ -129,7 +133,6 @@ public class SachFragment extends Fragment {
     }
 
     public void fillRCV() {
-        lstLS = (ArrayList<LoaiSach>) loaiSachDAO.getAll();
         lstSach = (ArrayList<Sach>) sachDAO.getAll();
         adapter = new SachAdapter(getContext(), lstSach, new IClickItemRCV() {
             @Override
@@ -147,6 +150,7 @@ public class SachFragment extends Fragment {
 
     }
     protected void openDialog(final Context context, final int type) {
+
         dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_sach);
@@ -162,7 +166,7 @@ public class SachFragment extends Fragment {
         Button btn_cancel = dialog.findViewById(R.id.btn_cancel);
         Button btn_save = dialog.findViewById(R.id.btn_save);
 
-        spinnerAdapter = new LoaiSachSpinnerAdapter(getContext(),R.layout.item_view_spinner_loaisach,lstLS);
+        spinnerAdapter = new LoaiSachSpinnerAdapter(getContext(),R.layout.item_view_spinner,lstLS);
         spinner_loaiSach.setAdapter(spinnerAdapter);
         spinner_loaiSach.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -222,7 +226,6 @@ public class SachFragment extends Fragment {
                     dialog.dismiss();
                     fillRCV();
                 }
-                Toast.makeText(context, maLoaiSach + "", Toast.LENGTH_SHORT).show();
             }
         });
         dialog.show();
@@ -232,7 +235,7 @@ public class SachFragment extends Fragment {
         if (tenSach.length() != 0 && giaThue.length() != 0) {
             sach.setTenSach(tenSach);
             sach.setGiaThue(Integer.parseInt(giaThue));
-            sach.setMaSach(maLoaiSach);
+            sach.setMaLoai(maLoaiSach);
             check = 1;
         } else {
             if (tenSach.length() == 0) {
@@ -253,10 +256,14 @@ public class SachFragment extends Fragment {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getContext(), "Xóa thành công !", Toast.LENGTH_SHORT).show();
-                sachDAO.delete(id);
-                fillRCV();
-                dialog.dismiss();
+                if(phieuMuonDAO.checkID("maSach",String.valueOf(id))) {
+                    Toast.makeText(getContext(), "Không thể xóa quyển Sách này !", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "Xóa thành công !", Toast.LENGTH_SHORT).show();
+                    sachDAO.delete(id);
+                    fillRCV();
+                    dialog.dismiss();
+                }
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {

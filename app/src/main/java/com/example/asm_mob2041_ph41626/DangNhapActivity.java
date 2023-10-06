@@ -63,7 +63,7 @@ public class DangNhapActivity extends AppCompatActivity {
                     }
                 } else {
                     ThuThuDAO thuThuDAO = new ThuThuDAO(DangNhapActivity.this);
-                    if (thuThuDAO.checkLogin(getUsername,getPassword) > 0 || (getUsername.equals("admin") && getPassword.equals("admin"))) {
+                    if (thuThuDAO.checkLogin(getUsername,getPassword) > 0) {
                         Toast.makeText(DangNhapActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
                         rememberAccount(chk_rememberAccount.isChecked());
                         Intent intent = new Intent(getApplicationContext(),MainActivity.class);

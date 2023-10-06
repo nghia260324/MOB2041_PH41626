@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:text="Giá thuê: 5.000"
                 android:textSize="16sp"
-                android:textColor="@color/gray_4dd"/>
+                android:textColor="@color/black"/>
         </LinearLayout>
         <ImageButton
             android:id="@+id/btn_delete"
@@ -70,7 +70,7 @@
             android:layout_height="wrap_content"
             android:text="Ngày: 01/01/2020"
             android:textSize="16sp"
-            android:textColor="@color/gray_4dd"/>
+            android:textColor="@color/gray_4d0"/>
         <TextView
             android:layout_alignParentRight="true"
             android:layout_above="@id/tv_ngay"

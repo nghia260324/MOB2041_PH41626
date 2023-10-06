@@ -64,4 +64,15 @@ public class SachDAO {
         String sql = "SELECT * FROM SACH";
         return getData(sql);
     }
+
+    public boolean checkID(String fieldValue) {
+        String Query = "Select * from SACH where maLoai = " + fieldValue;
+        Cursor cursor = db.rawQuery(Query, null);
+        if(cursor.getCount() <= 0){
+            cursor.close();
+            return false;
+        }
+        cursor.close();
+        return true;
+    }
 }

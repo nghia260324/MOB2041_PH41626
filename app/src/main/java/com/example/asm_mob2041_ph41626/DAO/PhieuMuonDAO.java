@@ -74,4 +74,14 @@ public class PhieuMuonDAO {
         String sql = "SELECT * FROM PHIEUMUON";
         return getData(sql);
     }
+    public boolean checkID(String id,String value) {
+        String Query = "Select * from PHIEUMUON where " + id +  " = " + value;
+        Cursor cursor = db.rawQuery(Query, null);
+        if(cursor.getCount() <= 0){
+            cursor.close();
+            return false;
+        }
+        cursor.close();
+        return true;
+    }
 }

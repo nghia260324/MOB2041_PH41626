@@ -89,9 +89,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String username = intent.getStringExtra("username");
 
-        if (username.equals("admin")) {
-            tv_username.setText("Administrator");
-        } else {
+        if (!username.equals("admin")) {
             ThuThu thuThu = thuThuDAO.getID(username);
             tv_username.setText(thuThu.getHoTen());
 

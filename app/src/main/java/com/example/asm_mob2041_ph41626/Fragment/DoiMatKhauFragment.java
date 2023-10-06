@@ -128,20 +128,29 @@ public class DoiMatKhauFragment extends Fragment {
             SharedPreferences preferences = getActivity().getSharedPreferences("USER", Context.MODE_PRIVATE);
             String getPassOld = preferences.getString("password","");
             if (!getPassOld.equals(oldPass)) {
+                Toast.makeText(getContext(), "Mật khẩu cũ chưa chính xác !", Toast.LENGTH_SHORT).show();
+                edt_oldpassword.requestFocus();
                 check = -1;
-            }
-            if (!newPass.equals(enterPass)) {
-                check = -1;
+            } else {
+                if (!newPass.equals(enterPass)) {
+                    Toast.makeText(getContext(), "Nhập lại mật khẩu chưa chính xác !", Toast.LENGTH_SHORT).show();
+                    edt_enterthepassword.setError("Nhập lại mật khẩu chưa chính xác !");
+                    edt_enterthepassword.requestFocus();
+                    check = -1;
+                }
             }
         } else {
             if (oldPass.length() == 0) {
                 edt_oldpassword.setError("Không được để trống trường này !");
+                edt_oldpassword.requestFocus();
             }
             if (newPass.length() == 0) {
                 edt_newpassword.setError("Không được để trống trường này !");
+                edt_newpassword.requestFocus();
             }
             if (enterPass.length() == 0) {
                 edt_enterthepassword.setError("Không được để trống trường này !");
+                edt_enterthepassword.requestFocus();
             }
             check = -1;
         }

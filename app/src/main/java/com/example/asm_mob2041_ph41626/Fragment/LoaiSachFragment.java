@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.example.asm_mob2041_ph41626.Adapter.LoaiSachAdapter;
 import com.example.asm_mob2041_ph41626.DAO.LoaiSachDAO;
+import com.example.asm_mob2041_ph41626.DAO.SachDAO;
 import com.example.asm_mob2041_ph41626.IClickItemRCV;
 import com.example.asm_mob2041_ph41626.Model.LoaiSach;
 import com.example.asm_mob2041_ph41626.R;
@@ -81,6 +82,7 @@ public class LoaiSachFragment extends Fragment {
 
     FloatingActionButton btn_add;
     static LoaiSachDAO loaiSachDAO;
+    static SachDAO sachDAO;
     LoaiSachAdapter adapter;
     LoaiSach loaiSach;
     EditText edt_maloai,edt_tenLoai;
@@ -96,6 +98,7 @@ public class LoaiSachFragment extends Fragment {
         lstLS = new ArrayList<>();
         loaiSach = new LoaiSach();
         loaiSachDAO = new LoaiSachDAO(getContext());
+        sachDAO = new SachDAO(getContext());
 
         initUI(view);
         fillRCV();
@@ -208,10 +211,14 @@ public class LoaiSachFragment extends Fragment {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getContext(), "Xóa thành công !", Toast.LENGTH_SHORT).show();
-                loaiSachDAO.delete(id);
-                fillRCV();
-                dialog.dismiss();
+                if (sachDAO.checkID(String.valueOf(id))) {
+                    Toast.makeText(getContext(), "Không thể xóa loại sách này !", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "Xóa thành công !", Toast.LENGTH_SHORT).show();
+                    loaiSachDAO.delete(id);
+                    fillRCV();
+                    dialog.dismiss();
+                }
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {

@@ -10,49 +10,51 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.asm_mob2041_ph41626.Model.LoaiSach;
+import com.example.asm_mob2041_ph41626.Model.Sach;
+import com.example.asm_mob2041_ph41626.Model.ThanhVien;
 import com.example.asm_mob2041_ph41626.R;
 
 import java.util.ArrayList;
 
-public class LoaiSachSpinnerAdapter extends ArrayAdapter<LoaiSach> {
+public class SachSpinnerAdapter extends ArrayAdapter<Sach> {
+
     private Context context;
-    private ArrayList<LoaiSach> lstLS;
+    private ArrayList<Sach> lstSach;
+
     TextView tv_maLoai,tv_tenLoai;
 
-
-    public LoaiSachSpinnerAdapter(@NonNull Context context, int resource, ArrayList<LoaiSach> lstLS) {
-        super(context,resource,lstLS);
+    public SachSpinnerAdapter(@NonNull Context context, int resource, ArrayList<Sach> lstSach) {
+        super(context, resource,lstSach);
         this.context = context;
-        this.lstLS = lstLS;
+        this.lstSach = lstSach;
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_view_spinner,parent,false);
-        final LoaiSach loaiSach = lstLS.get(position);
+        final Sach sach = lstSach.get(position);
 
-        if (loaiSach != null) {
+        if (sach != null) {
             tv_maLoai = convertView.findViewById(R.id.tv_maLoai);
-            tv_maLoai.setText(String.valueOf(loaiSach.getMaLoai()));
+            tv_maLoai.setText(String.valueOf(sach.getMaSach()));
             tv_tenLoai = convertView.findViewById(R.id.tv_tenLoai);
-            tv_tenLoai.setText(loaiSach.getTenLoai());
+            tv_tenLoai.setText(sach.getTenSach());
         }
+
         return convertView;
     }
 
     @Override
     public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_spinner_selected,parent,false);
+        final Sach sach = lstSach.get(position);
 
-        final LoaiSach loaiSach = lstLS.get(position);
-
-        if (loaiSach != null) {
+        if (sach != null) {
             tv_maLoai = convertView.findViewById(R.id.tv_maLoai);
-            tv_maLoai.setText(String.valueOf(loaiSach.getMaLoai()));
+            tv_maLoai.setText(String.valueOf(sach.getMaSach()));
             tv_tenLoai = convertView.findViewById(R.id.tv_tenLoai);
-            tv_tenLoai.setText(loaiSach.getTenLoai());
+            tv_tenLoai.setText(sach.getTenSach());
         }
         return convertView;
     }

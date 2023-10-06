@@ -60,6 +60,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(createTableLoaiSach);
 
         String add_tt = "INSERT INTO ThuThu VALUES" +
+                "('admin','Administrator','admin')," +
                 "('ttnva','Nguyễn Văn A','12345')," +
                 "('ttnvb','Nguyễn Văn B','12345')";
         db.execSQL(add_tt);

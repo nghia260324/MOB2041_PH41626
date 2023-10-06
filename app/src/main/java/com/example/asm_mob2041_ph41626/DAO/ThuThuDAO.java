@@ -72,4 +72,15 @@ public class ThuThuDAO {
             return -1;
         }
     }
+
+    public boolean checkID(String value) {
+        String Query = "Select * from THUTHU where maTT = " + value;
+        Cursor cursor = db.rawQuery(Query, null);
+        if(cursor.getCount() <= 0){
+            cursor.close();
+            return false;
+        }
+        cursor.close();
+        return true;
+    }
 }
