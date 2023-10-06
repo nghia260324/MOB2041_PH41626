@@ -105,19 +105,15 @@ public class TaoTaiKhoanFragment extends Fragment {
 
 
                 if (validate(username,name,password,enterPass) > 0) {
-                    if (thuThuDAO.checkID(username)) {
-                        Toast.makeText(getContext(), "Tài khoản đã tồn tại !", Toast.LENGTH_SHORT).show();
+                    ThuThuDAO thuThuDAO = new ThuThuDAO(getContext());
+                    if (thuThuDAO.insert(new ThuThu(username,name,password)) > 0) {
+                        Toast.makeText(getContext(), "Thêm thành công !", Toast.LENGTH_SHORT).show();
+                        edt_username.setText("");
+                        edt_name.setText("");
+                        edt_password.setText("");
+                        edt_enterthepassword.setText("");
                     } else {
-                        ThuThuDAO thuThuDAO = new ThuThuDAO(getContext());
-                        if (thuThuDAO.insert(new ThuThu(username,name,password)) > 0) {
-                            Toast.makeText(getContext(), "Thêm thành công !", Toast.LENGTH_SHORT).show();
-                            edt_username.setText("");
-                            edt_name.setText("");
-                            edt_password.setText("");
-                            edt_enterthepassword.setText("");
-                        } else {
-                            Toast.makeText(getContext(), "Thêm thất bại !", Toast.LENGTH_SHORT).show();
-                        }
+                        Toast.makeText(getContext(), "Thêm thất bại !", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
