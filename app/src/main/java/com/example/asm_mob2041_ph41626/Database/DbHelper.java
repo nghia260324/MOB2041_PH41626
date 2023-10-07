@@ -8,7 +8,8 @@ import androidx.annotation.Nullable;
 
 public class DbHelper extends SQLiteOpenHelper {
     static final String dbName = "PNLIB";
-    static final int dbVersion = 1;
+    static final int dbVersion = 2;
+
     public DbHelper(Context context) {
         super(context, dbName, null, dbVersion);
     }
@@ -16,7 +17,7 @@ public class DbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         //Tao bang Thu Thu
-        String createTableThuThu=
+        String createTableThuThu =
                 "Create table ThuThu (" +
                         "maTT TEXT PRIMARY KEY, " +
                         "hoTen TEXT NOT NULL, " +
@@ -24,15 +25,16 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(createTableThuThu);
 
         //Tao bang Thanh Vien
-        String createTableThanhVien=
+        String createTableThanhVien =
                 "Create table ThanhVien (" +
                         "maTV INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         "hoTen TEXT NOT NULL, " +
-                        "namSinh INTEGER NOT NULL)";
+                        "namSinh INTEGER NOT NULL," +
+                        "cccd INTEGER NOT NULL)";
         db.execSQL(createTableThanhVien);
 
         //Tao bang Phieu Muon
-        String createTablePhieuMuon=
+        String createTablePhieuMuon =
                 "Create table PhieuMuon(" +
                         "maPM INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         "maTT TEXT NOT NULL, " +
@@ -44,7 +46,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(createTablePhieuMuon);
 
         //Tao bang Sach
-        String createTableSach=
+        String createTableSach =
                 "Create table Sach(" +
                         "maSach INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         "tenSach TEXT NOT NULL, " +
@@ -53,7 +55,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(createTableSach);
 
         //Tao bang Loai Sach
-        String createTableLoaiSach=
+        String createTableLoaiSach =
                 "Create table LoaiSach(" +
                         "maLoai INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         "tenLoai TEXT NOT NULL)";
@@ -82,11 +84,11 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(add_sach);
 
         String add_thanhvien = "INSERT INTO ThanhVien VALUES" +
-                "(0,'Nguyễn Văn A',2000)," +
-                "(1,'Nguyễn Văn B',2001)," +
-                "(2,'Nguyễn Văn C',2002)," +
-                "(3,'Nguyễn Văn D',2003)," +
-                "(4,'Nguyễn Văn E',2004)";
+                "(0,'Nguyễn Văn A',2000, '0123')," +
+                "(1,'Nguyễn Văn B',2001, '2345')," +
+                "(2,'Nguyễn Văn C',2002, '3456')," +
+                "(3,'Nguyễn Văn D',2003, '4567')," +
+                "(4,'Nguyễn Văn E',2004, '5678')";
         db.execSQL(add_thanhvien);
     }
 

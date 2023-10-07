@@ -23,6 +23,7 @@ public class ThanhVienDAO {
         ContentValues contentValues = new ContentValues();
         contentValues.put("hoTen", obj.getHoTen());
         contentValues.put("namSinh",obj.getNamSinh());
+        contentValues.put("cccd",obj.getCccd());
 
         return db.insert("ThanhVien",null,contentValues);
     }
@@ -31,6 +32,7 @@ public class ThanhVienDAO {
         ContentValues contentValues = new ContentValues();
         contentValues.put("hoTen", obj.getHoTen());
         contentValues.put("namSinh",obj.getNamSinh());
+        contentValues.put("cccd",obj.getCccd());
 
         return db.update("ThanhVien",contentValues,"maTV = ?",new String[]{String.valueOf(obj.getMaTV())});
     }
@@ -46,7 +48,8 @@ public class ThanhVienDAO {
             lstTV.add(new ThanhVien(
                     Integer.parseInt(cursor.getString(0)),
                     cursor.getString(1),
-                    Integer.parseInt(cursor.getString(2))
+                    Integer.parseInt(cursor.getString(2)),
+                    cursor.getString(3)
             ));
         }
         return lstTV;

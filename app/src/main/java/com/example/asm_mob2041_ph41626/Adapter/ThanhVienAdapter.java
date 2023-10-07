@@ -40,6 +40,7 @@ public class ThanhVienAdapter extends RecyclerView.Adapter<ThanhVienAdapter.View
         holder.tv_matv.setText("Mã TV: " + String.valueOf(thanhVien.getMaTV()));
         holder.tv_hoten.setText("Tên TV: " + thanhVien.getHoTen());
         holder.tv_namsinh.setText("Năm Sinh: " + String.valueOf(thanhVien.getNamSinh()));
+        holder.tvCccd.setText("CCCD: " + thanhVien.getCccd());
 
         holder.btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,7 +63,7 @@ public class ThanhVienAdapter extends RecyclerView.Adapter<ThanhVienAdapter.View
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tv_matv,tv_hoten,tv_namsinh;
+        TextView tv_matv,tv_hoten,tv_namsinh, tvCccd;
         ImageButton btn_delete;
         View view;
         public ViewHolder(@NonNull View itemView) {
@@ -71,6 +72,7 @@ public class ThanhVienAdapter extends RecyclerView.Adapter<ThanhVienAdapter.View
             tv_matv = itemView.findViewById(R.id.tv_matv);
             tv_hoten = itemView.findViewById(R.id.tv_hoten);
             tv_namsinh = itemView.findViewById(R.id.tv_namsinh);
+            tvCccd = itemView.findViewById(R.id.tv_cccd);
 
             btn_delete = itemView.findViewById(R.id.btn_delete);
         }
